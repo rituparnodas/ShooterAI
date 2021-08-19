@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright DevDasTour 2021 All Right Reserved.
 
 #include "FP_FirstPersonCharacter.h"
 #include "Animation/AnimInstance.h"
@@ -133,11 +133,13 @@ void AFP_FirstPersonCharacter::OnFire()
 	// Deal with impact
 	AActor* DamagedActor = Impact.GetActor();
 	UPrimitiveComponent* DamagedComponent = Impact.GetComponent();
-
+	TSubclassOf<UDamageType> DamageType;
+	UGameplayStatics::ApplyDamage(DamagedActor, 20.f, GetInstigatorController(), this, DamageType);
 	// If we hit an actor, with a component that is simulating physics, apply an impulse
 	if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
 	{
 		DamagedComponent->AddImpulseAtLocation(ShootDir * WeaponDamage, Impact.Location);
+		
 	}
 }
 
