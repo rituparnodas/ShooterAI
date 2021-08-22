@@ -6,6 +6,16 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "AIFunctionLibrary.generated.h"
 
+UENUM(BlueprintType)
+enum ENPCState
+{
+	Passive,
+	Investigating,
+	Seeking,
+	Attack,
+	Dead
+};
+
 /**
  * 
  */

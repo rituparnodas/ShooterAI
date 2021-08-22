@@ -5,6 +5,7 @@
 #include "Components/CapsuleComponent.h"
 #include "WeaponBase.h"
 #include "AIFunctionLibrary.h"
+#include "AIAnimationInstance.h"
 
 AAICharacterBase::AAICharacterBase()
 {
@@ -21,7 +22,7 @@ void AAICharacterBase::BeginPlay()
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	AWeaponBase* Weapon{ GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, UAIFunctionLibrary::GetIdentityTransform(), SpawnParams) };
+	Weapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, UAIFunctionLibrary::GetIdentityTransform(), SpawnParams);
 	if (Weapon)
 	{
 		Weapon->SetOwner(this);
@@ -52,4 +53,23 @@ void AAICharacterBase::HandleDeath()
 		GetMesh()->WakeAllRigidBodies();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}	
+}
+
+bool AAICharacterBase::GetIsDead_Implementation()
+{
+	return HealthComp->IsDead();
+}
+
+void AAICharacterBase::NotifyChangeState_Implementation(ENPCState NPCState)
+{
+	UAIAnimationInstance* ABP = Cast<UAIAnimationInstance>(GetMesh()->GetAnimInstance());
+	if (ABP)
+	{
+		ABP->NotifyChangeState(NPCState);
+	}
+}
+
+bool AAICharacterBase::GetTeamID_Implementation()
+{
+	return false;
 }

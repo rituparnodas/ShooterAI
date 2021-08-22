@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InterfaceAIHelper.h"
 #include "AIController.h"
 #include "AICGuard.generated.h"
 
@@ -10,7 +11,7 @@
  * 
  */
 UCLASS()
-class PERCEPTIVEAI_SHOOTER_API AAICGuard : public AAIController
+class PERCEPTIVEAI_SHOOTER_API AAICGuard : public AAIController, public IInterfaceAIHelper
 {
 	GENERATED_BODY()
 	
@@ -30,5 +31,16 @@ protected:
 public:
 
 	virtual void Tick(float DeltaTime) override;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
+	FName AIStateName = FName("State");
+
+	UFUNCTION(BlueprintPure)
+	ENPCState GetNPCState();
+
+	UFUNCTION(BlueprintCallable)
+	void SetStateAsPassive();
+
+	//virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
 
 };

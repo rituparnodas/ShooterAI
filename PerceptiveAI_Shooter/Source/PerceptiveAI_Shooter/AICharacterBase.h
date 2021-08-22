@@ -3,11 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "InterfaceAIHelper.h"
 #include "GameFramework/Character.h"
 #include "AICharacterBase.generated.h"
 
 UCLASS()
-class PERCEPTIVEAI_SHOOTER_API AAICharacterBase : public ACharacter
+class PERCEPTIVEAI_SHOOTER_API AAICharacterBase : public ACharacter, public IInterfaceAIHelper
 {
 	GENERATED_BODY()
 
@@ -25,6 +26,9 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<class AWeaponBase> WeaponClass;
 
+	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
+	class AWeaponBase* Weapon = nullptr;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -34,6 +38,10 @@ public:
 
 	UFUNCTION()
 		void HandleDeath();
+
+	virtual bool GetIsDead_Implementation() override;
+	virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
+	virtual bool GetTeamID_Implementation() override;
 
 private:
 
