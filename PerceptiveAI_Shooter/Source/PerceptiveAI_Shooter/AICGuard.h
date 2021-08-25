@@ -31,16 +31,24 @@ protected:
 public:
 
 	virtual void Tick(float DeltaTime) override;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
-	FName AIStateName = FName("State");
 
-	UFUNCTION(BlueprintPure)
+	UFUNCTION(BlueprintPure, Category = "State")
 	ENPCState GetNPCState();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "State")
 	void SetStateAsPassive();
 
-	//virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void SetStateAsInvestigating(FVector MoveToLocation, FVector PointOfLocation);
 
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void SetStateAsAttack(AActor* Target);
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void SetStateAsSeeking(FVector Search);
+
+	UFUNCTION(BlueprintCallable, Category = "State")
+	void SetStateAsDead();
+
+	//virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
 };
