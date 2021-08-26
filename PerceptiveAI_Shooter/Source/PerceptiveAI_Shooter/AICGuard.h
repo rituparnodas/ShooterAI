@@ -14,8 +14,10 @@ UCLASS()
 class PERCEPTIVEAI_SHOOTER_API AAICGuard : public AAIController, public IInterfaceAIHelper
 {
 	GENERATED_BODY()
-	
+
 protected:
+
+	AAICGuard();
 
 	virtual void BeginPlay() override;
 
@@ -27,6 +29,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "AI")
 		class UBlackboardData* BlackBoardData;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		class UAIPerceptionComponent* AIPerceptioncomp;
 
 public:
 

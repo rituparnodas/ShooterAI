@@ -4,6 +4,12 @@
 #include "AICGuard.h"
 #include "BehaviorTree/BlackBoardComponent.h"
 #include "AICharacterBase.h"
+#include "Perception/AIPerceptionComponent.h"
+
+AAICGuard::AAICGuard()
+{
+	AIPerceptioncomp = CreateDefaultSubobject<UAIPerceptionComponent>(FName("AIPerceptionComp"));
+}
 
 void AAICGuard::BeginPlay()
 {

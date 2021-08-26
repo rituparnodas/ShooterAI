@@ -7,6 +7,7 @@
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
+#include "Perception/AISense_Damage.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -135,6 +136,11 @@ void AFP_FirstPersonCharacter::OnFire()
 	UPrimitiveComponent* DamagedComponent = Impact.GetComponent();
 	TSubclassOf<UDamageType> DamageType;
 	UGameplayStatics::ApplyDamage(DamagedActor, 20.f, GetInstigatorController(), this, DamageType);
+
+	MakeNoise(1.f, this, Impact.Location, 0.f, FName("GunShot"));
+
+	UAISense_Damage::ReportDamageEvent(GetWorld(), Impact.GetActor(), this, 20.f, GetActorLocation(), Impact.Location);
+
 	// If we hit an actor, with a component that is simulating physics, apply an impulse
 	if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
 	{
