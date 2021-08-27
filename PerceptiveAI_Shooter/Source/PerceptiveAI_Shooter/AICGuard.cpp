@@ -4,7 +4,11 @@
 #include "AICGuard.h"
 #include "BehaviorTree/BlackBoardComponent.h"
 #include "AICharacterBase.h"
+#include "Kismet/KismetSystemLibrary.h"
 #include "Perception/AIPerceptionComponent.h"
+#include "Perception/AIPerceptionSystem.h"
+#include "Perception/AISense_Sight.h"
+#include "Perception/AISense_Hearing.h"
 
 AAICGuard::AAICGuard()
 {
@@ -15,12 +19,23 @@ void AAICGuard::BeginPlay()
 {
 	Super::BeginPlay();
 
+	AIPerceptioncomp->OnPerceptionUpdated.AddDynamic(this, &AAICGuard::OnUpdatedPerception);
+
 	UBlackboardComponent* BlackBoardComponent = nullptr;
 	UseBlackboard(BlackBoardData, BlackBoardComponent);
 
 	RunBehaviorTree(AIBehavior);
 
 	GetBlackboardComponent()->SetValueAsVector("SpawnLocation", GetPawn()->GetActorLocation());
+
+	if (UKismetSystemLibrary::DoesImplementInterface(this, UInterfaceAIHelper::StaticClass()))
+	{
+		UE_LOG(LogTemp, Warning, L"Implemented Interface");
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, L"Not Implemented");
+	}
 }
 
 void AAICGuard::Tick(float DeltaTime)
@@ -66,4 +81,39 @@ void AAICGuard::SetStateAsDead()
 {
 	GetBlackboardComponent()->SetValueAsEnum("State", ENPCState::Dead);
 	Cast<AAICharacterBase>(GetPawn())->NotifyChangeState(ENPCState::Dead);
+}
+
+void AAICGuard::OnUpdatedPerception(const TArray<AActor*>& UpdatedActors)
+{
+	for (AActor* Actor : UpdatedActors)
+	{
+		FActorPerceptionBlueprintInfo PerceptionInfo;
+		AIPerceptioncomp->GetActorsPerception(Actor, PerceptionInfo);
+		SensedActor = PerceptionInfo.Target;
+		for (FAIStimulus AIStimulus : PerceptionInfo.LastSensedStimuli)
+		{
+			ActorSensedStimulus = AIStimulus;
+			TSubclassOf<UAISense> SenseClass = UAIPerceptionSystem::GetSenseClassForStimulus(GetWorld(), ActorSensedStimulus);
+			if (SenseClass == UAISense_Sight::StaticClass())
+			{
+				ProcessLastVisionStimuli();
+			}
+			else if (SenseClass == UAISense_Hearing::StaticClass())
+			{
+
+			}
+
+		}
+	}
+}
+
+void AAICGuard::ProcessLastVisionStimuli()
+{
+	if (SensedActor)
+	{
+		if (UKismetSystemLibrary::DoesImplementInterface(SensedActor, UInterfaceAIHelper::StaticClass()))
+		{
+
+		}
+	}
 }

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InterfaceAIHelper.h"
 #include "AIController.h"
+#include "Perception/AIPerceptionTypes.h"
 #include "AICGuard.generated.h"
 
 /**
@@ -56,4 +57,15 @@ public:
 	void SetStateAsDead();
 
 	//virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
+
+	UFUNCTION()
+		void OnUpdatedPerception(const TArray<AActor*>& UpdatedActors);
+
+	void ProcessLastVisionStimuli();
+
+	UPROPERTY(BlueprintReadWrite, Category = "AI")
+		class AActor* SensedActor = nullptr;
+
+	UPROPERTY(BlueprintReadWrite, Category = "AI")
+		FAIStimulus ActorSensedStimulus;
 };
