@@ -5,32 +5,29 @@
 #include "BehaviorTree/BlackBoardComponent.h"
 #include "AICharacterBase.h"
 #include "Kismet/KismetSystemLibrary.h"
-#include "Perception/AIPerceptionComponent.h"
+#include "PerceptiveAI_Shooter/AI/AIPerceptionComp.h"
 #include "Perception/AIPerceptionSystem.h"
 #include "Perception/AISense_Sight.h"
 #include "Perception/AISense_Hearing.h"
 #include "Perception/AISenseConfig.h"
 #include "Perception/AISenseConfig_Sight.h"
 #include "Perception/AISenseConfig_Hearing.h"
+#include "Perception/AISenseConfig_Damage.h"
 
 AAICGuard::AAICGuard()
 {
-	AIPerceptioncomp = CreateDefaultSubobject<UAIPerceptionComponent>(FName("AIPerceptionComp"));
-	AIPerceptioncomp->SetDominantSense(UAISense_Sight::StaticClass());
-	
-	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(FName("Sight"));
-	//Hearing = CreateDefaultSubobject<UAISenseConfig_Hearing>(FName("Hearing"));
-	Sight->Implementation = UAISenseConfig_Sight::StaticClass();
-	Sight->DetectionByAffiliation.bDetectFriendlies = Sight->DetectionByAffiliation.bDetectNeutrals = true;
-	Sight->SetMaxAge(6.f);
-
+	AIPerceptioncomp = CreateDefaultSubobject<UAIPerceptionComp>(FName("AIPerceptionComp"));
+	SetPerceptionComponent(*AIPerceptioncomp);
 }
 
 void AAICGuard::BeginPlay()
 {
 	Super::BeginPlay();
-
-	AIPerceptioncomp->OnPerceptionUpdated.AddDynamic(this, &AAICGuard::OnUpdatedPerception);
+	
+	if (GetPerceptionComponent())
+	{
+		GetPerceptionComponent()->OnPerceptionUpdated.AddDynamic(this, &AAICGuard::OnUpdatedPerception);		
+	}
 
 	UBlackboardComponent* BlackBoardComponent = nullptr;
 	UseBlackboard(BlackBoardData, BlackBoardComponent);

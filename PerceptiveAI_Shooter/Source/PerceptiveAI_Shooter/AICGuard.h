@@ -40,6 +40,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		class UAISenseConfig_Hearing* Hearing = nullptr;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		class UAISenseConfig_Damage* Damage = nullptr;
+
 public:
 
 	virtual void Tick(float DeltaTime) override;
