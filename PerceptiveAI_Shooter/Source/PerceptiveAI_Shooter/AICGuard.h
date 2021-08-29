@@ -34,6 +34,12 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 		class UAIPerceptionComponent* AIPerceptioncomp;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		class UAISenseConfig_Sight* Sight = nullptr;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+		class UAISenseConfig_Hearing* Hearing = nullptr;
+
 public:
 
 	virtual void Tick(float DeltaTime) override;

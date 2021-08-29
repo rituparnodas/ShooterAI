@@ -9,10 +9,21 @@
 #include "Perception/AIPerceptionSystem.h"
 #include "Perception/AISense_Sight.h"
 #include "Perception/AISense_Hearing.h"
+#include "Perception/AISenseConfig.h"
+#include "Perception/AISenseConfig_Sight.h"
+#include "Perception/AISenseConfig_Hearing.h"
 
 AAICGuard::AAICGuard()
 {
 	AIPerceptioncomp = CreateDefaultSubobject<UAIPerceptionComponent>(FName("AIPerceptionComp"));
+	AIPerceptioncomp->SetDominantSense(UAISense_Sight::StaticClass());
+	
+	Sight = CreateDefaultSubobject<UAISenseConfig_Sight>(FName("Sight"));
+	//Hearing = CreateDefaultSubobject<UAISenseConfig_Hearing>(FName("Hearing"));
+	Sight->Implementation = UAISenseConfig_Sight::StaticClass();
+	Sight->DetectionByAffiliation.bDetectFriendlies = Sight->DetectionByAffiliation.bDetectNeutrals = true;
+	Sight->SetMaxAge(6.f);
+
 }
 
 void AAICGuard::BeginPlay()
@@ -27,15 +38,6 @@ void AAICGuard::BeginPlay()
 	RunBehaviorTree(AIBehavior);
 
 	GetBlackboardComponent()->SetValueAsVector("SpawnLocation", GetPawn()->GetActorLocation());
-
-	if (UKismetSystemLibrary::DoesImplementInterface(this, UInterfaceAIHelper::StaticClass()))
-	{
-		UE_LOG(LogTemp, Warning, L"Implemented Interface");
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, L"Not Implemented");
-	}
 }
 
 void AAICGuard::Tick(float DeltaTime)
