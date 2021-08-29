@@ -8,6 +8,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "Perception/AISense_Damage.h"
+#include "PerceptiveAI_Shooter/HealthComponent.h"
 
 #define COLLISION_WEAPON		ECC_GameTraceChannel1
 
@@ -54,6 +55,8 @@ AFP_FirstPersonCharacter::AFP_FirstPersonCharacter()
 
 	// Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
 	// derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+	HealthComp = CreateDefaultSubobject<UHealthComponent>(FName("HealthComponent"));
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -121,7 +124,7 @@ void AFP_FirstPersonCharacter::OnFire()
 		PlayerController->GetPlayerViewPoint(StartTrace, CamRot);
 		ShootDir = CamRot.Vector();
 
-		// Adjust trace so there is nothing blocking the ray between the camera and the pawn, and calculate distance from adjusted start
+		// Adjusts trace so there is nothing blocking the ray between the camera and the pawn, and calculate distance from adjusted start
 		StartTrace = StartTrace + ShootDir * ((GetActorLocation() - StartTrace) | ShootDir);
 	}
 
@@ -137,7 +140,7 @@ void AFP_FirstPersonCharacter::OnFire()
 	TSubclassOf<UDamageType> DamageType;
 	UGameplayStatics::ApplyDamage(DamagedActor, 20.f, GetInstigatorController(), this, DamageType);
 
-	MakeNoise(1.f, this, Impact.Location, 0.f, FName("GunShot"));
+	MakeNoise(1.f, this, GetActorLocation(), 0.f, FName("GunShot"));
 
 	UAISense_Damage::ReportDamageEvent(GetWorld(), Impact.GetActor(), this, 20.f, GetActorLocation(), Impact.Location); // For AISense_Damage
 
@@ -268,4 +271,14 @@ void AFP_FirstPersonCharacter::TryEnableTouchscreenMovement(UInputComponent* Pla
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AFP_FirstPersonCharacter::BeginTouch);
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Released, this, &AFP_FirstPersonCharacter::EndTouch);
 	PlayerInputComponent->BindTouch(EInputEvent::IE_Repeat, this, &AFP_FirstPersonCharacter::TouchUpdate);	
+}
+
+bool AFP_FirstPersonCharacter::GetTeamID_Implementation()
+{
+	return true; // true = Is Player
+}
+
+bool AFP_FirstPersonCharacter::GetIsDead_Implementation()
+{
+	return HealthComp->IsDead();
 }

@@ -65,7 +65,7 @@ void AAICharacterBase::NotifyChangeState_Implementation(ENPCState NPCState)
 	UAIAnimationInstance* ABP = Cast<UAIAnimationInstance>(GetMesh()->GetAnimInstance());
 	if (ABP)
 	{
-		ABP->NotifyChangeState(NPCState);
+		Execute_NotifyChangeState(ABP, NPCState);
 	}
 }
 

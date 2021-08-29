@@ -32,16 +32,7 @@ protected:
 		class UBlackboardData* BlackBoardData;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		class UAIPerceptionComponent* AIPerceptioncomp;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		class UAISenseConfig_Sight* Sight = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		class UAISenseConfig_Hearing* Hearing = nullptr;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-		class UAISenseConfig_Damage* Damage = nullptr;
+		class UAIPerceptionComponent* AIPerceptioncomp = nullptr;
 
 public:
 
@@ -71,6 +62,7 @@ public:
 		void OnUpdatedPerception(const TArray<AActor*>& UpdatedActors);
 
 	void ProcessLastVisionStimuli();
+	void ProcessLastHearingStimuli();
 
 	UPROPERTY(BlueprintReadWrite, Category = "AI")
 		class AActor* SensedActor = nullptr;

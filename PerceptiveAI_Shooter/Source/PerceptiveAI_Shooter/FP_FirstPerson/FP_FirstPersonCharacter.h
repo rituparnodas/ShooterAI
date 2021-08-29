@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "PerceptiveAI_Shooter/InterfaceAIHelper.h"
 #include "FP_FirstPersonCharacter.generated.h"
 
 class UInputComponent;
@@ -13,7 +14,7 @@ class USoundBase;
 class UAnimMontage;
 
 UCLASS(config=Game)
-class AFP_FirstPersonCharacter : public ACharacter
+class AFP_FirstPersonCharacter : public ACharacter, public IInterfaceAIHelper
 {
 	GENERATED_BODY()
 
@@ -147,11 +148,16 @@ protected:
 	 */
 	void TryEnableTouchscreenMovement(UInputComponent* InputComponent);
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+		class UHealthComponent* HealthComp = nullptr;
+
 public:
 	/** Returns Mesh1P subobject **/
 	FORCEINLINE class USkeletalMeshComponent* GetMesh1P() const { return Mesh1P; }
 	/** Returns FirstPersonCameraComponent subobject **/
 	FORCEINLINE class UCameraComponent* GetFirstPersonCameraComponent() const { return FirstPersonCameraComponent; }
 
+	virtual bool GetTeamID_Implementation() override;
+	virtual bool GetIsDead_Implementation() override;
 };
 
