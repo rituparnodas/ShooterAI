@@ -13,5 +13,18 @@ UCLASS()
 class PERCEPTIVEAI_SHOOTER_API UBTT_SetAimingMode : public UBTTaskNode
 {
 	GENERATED_BODY()
-	
+
+public:
+
+	UBTT_SetAimingMode();
+
+	class AAIController* AIController = nullptr;
+	class APawn* AIPawn = nullptr;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "BTTasks")
+		bool IsAiming;
+
+protected:
+
+	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
 };

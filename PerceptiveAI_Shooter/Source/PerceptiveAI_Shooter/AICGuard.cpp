@@ -199,13 +199,22 @@ void AAICGuard::ProcessLastHearingStimuli()
 			FVector(50.f, 50.f, 200.f)
 		);
 
-		if (ActorSensedStimulus.Tag == FName("GunShot"))
+		/*if (UNavigationSystemV1::K2_ProjectPointToNavigation(
+			GetWorld(), 
+			ActorSensedStimulus.StimulusLocation, 
+			ProjectedLocation, 
+			0,
+			0, 
+			FVector(50.f, 50.f, 200.f)))*/
 		{
-			SetStateAsSeeking(ProjectedLocation);
-		}
-		else
-		{
-			SetStateAsInvestigating(ProjectedLocation, ActorSensedStimulus.StimulusLocation);
-		}
+			if (ActorSensedStimulus.Tag == FName("GunShot"))
+			{
+				SetStateAsSeeking(ProjectedLocation);
+			}
+			else
+			{
+				SetStateAsInvestigating(ProjectedLocation, ActorSensedStimulus.StimulusLocation);
+			}
+		}	
 	}
 }

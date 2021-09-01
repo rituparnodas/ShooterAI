@@ -36,4 +36,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		bool GetTeamID(); // True If Player
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void ModifyAimingStance(bool IsAiming);
 };
