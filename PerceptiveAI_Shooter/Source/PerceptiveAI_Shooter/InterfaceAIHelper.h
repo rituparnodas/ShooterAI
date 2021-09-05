@@ -39,4 +39,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void ModifyAimingStance(bool IsAiming);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void ModifyMovementSpeed(ENPCState NPCState);
 };

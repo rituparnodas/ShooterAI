@@ -23,7 +23,7 @@ EBTNodeResult::Type UBTT_SetAimingMode::ExecuteTask(UBehaviorTreeComponent& Owne
 	if(!AIGuard) return EBTNodeResult::Failed;
 	IInterfaceAIHelper::Execute_ModifyAimingStance(AIGuard, IsAiming);
 
-	UE_LOG(LogTemp, Warning, L"Executing");
+	//UE_LOG(LogTemp, Warning, L"Executing");
 
 	return EBTNodeResult::Succeeded;
 }

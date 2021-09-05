@@ -42,6 +42,7 @@ public:
 	virtual bool GetIsDead_Implementation() override;
 	virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
 	virtual bool GetTeamID_Implementation() override;
+	virtual void ModifyMovementSpeed_Implementation(ENPCState NPCState) override;
 
 private:
 

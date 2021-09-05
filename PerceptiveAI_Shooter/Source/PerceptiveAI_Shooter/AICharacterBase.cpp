@@ -6,6 +6,7 @@
 #include "WeaponBase.h"
 #include "AIFunctionLibrary.h"
 #include "AIAnimationInstance.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 AAICharacterBase::AAICharacterBase()
 {
@@ -52,7 +53,7 @@ void AAICharacterBase::HandleDeath()
 		GetMesh()->SetAllBodiesSimulatePhysics(true);
 		GetMesh()->WakeAllRigidBodies();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}	
+	}
 }
 
 bool AAICharacterBase::GetIsDead_Implementation()
@@ -72,4 +73,25 @@ void AAICharacterBase::NotifyChangeState_Implementation(ENPCState NPCState)
 bool AAICharacterBase::GetTeamID_Implementation()
 {
 	return false;
+}
+
+void AAICharacterBase::ModifyMovementSpeed_Implementation(ENPCState NPCState)
+{
+	float MovementSpeed;
+
+	switch (NPCState)
+	{
+	case Passive: MovementSpeed = 160.f;
+		break;
+	case Investigating: MovementSpeed = 160.f;
+		break;
+	case Seeking: MovementSpeed = 400.f;
+		break;
+	case Attack: MovementSpeed = 600.f;
+		break;
+	case Dead: MovementSpeed = 0.f;
+		break;
+	}
+
+	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
 }
