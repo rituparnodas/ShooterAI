@@ -6,6 +6,7 @@
 #include "UObject/Interface.h"
 #include "AIFunctionLibrary.h"
 #include "AIFunctionLibrary.h"
+#include "PatrolRoute.h"
 #include "InterfaceAIHelper.generated.h"
 
 // This class does not need to be modified.
@@ -42,4 +43,7 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void ModifyMovementSpeed(ENPCState NPCState);
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		class APatrolRoute* GetPatrolRoute();
 };

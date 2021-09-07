@@ -29,6 +29,9 @@ protected:
 	UPROPERTY(BlueprintReadWrite, Category = "Weapons")
 	class AWeaponBase* Weapon = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
+	class APatrolRoute* PatrolRoute = nullptr;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -43,6 +46,7 @@ public:
 	virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
 	virtual bool GetTeamID_Implementation() override;
 	virtual void ModifyMovementSpeed_Implementation(ENPCState NPCState) override;
+	virtual class APatrolRoute* GetPatrolRoute_Implementation() override;
 
 private:
 

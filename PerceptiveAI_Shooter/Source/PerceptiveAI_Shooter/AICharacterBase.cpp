@@ -6,6 +6,7 @@
 #include "WeaponBase.h"
 #include "AIFunctionLibrary.h"
 #include "AIAnimationInstance.h"
+#include "PatrolRoute.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 AAICharacterBase::AAICharacterBase()
@@ -94,4 +95,9 @@ void AAICharacterBase::ModifyMovementSpeed_Implementation(ENPCState NPCState)
 	}
 
 	GetCharacterMovement()->MaxWalkSpeed = MovementSpeed;
+}
+
+APatrolRoute* AAICharacterBase::GetPatrolRoute_Implementation()
+{
+	return PatrolRoute;
 }
