@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PerceptiveAI_Shooter/AICharacterBase.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
+#include "PerceptiveAI_Shooter/AICGuard.h"
 
 UBTT_MoveAlongPatrolPath::UBTT_MoveAlongPatrolPath()
 {
@@ -24,7 +25,18 @@ EBTNodeResult::Type UBTT_MoveAlongPatrolPath::ExecuteTask(UBehaviorTreeComponent
 	AAICharacterBase* AIGuard = Cast<AAICharacterBase>(AIPawn);
 	if (!AIGuard) return EBTNodeResult::Failed;
 
-	
+	APatrolRoute* PatrolRoute = IInterfaceAIHelper::Execute_GetPatrolRoute(AIGuard);
+	if (PatrolRoute)
+	{
+		PatrolRoute->GetNextPointAsWorldPosition();
+		AAICGuard* AIGuardController = Cast<AAICGuard>(AIGuard->GetController());
+		if (AIGuardController)
+		{
+			FAIMoveRequest Request;
+			FPathFollowingRequestResult AIMoveToResult = AIGuardController->MoveTo(Request,);
+		}
+	}
+		
 	//UE_LOG(LogTemp, Warning, L"Executing");
 
 	return EBTNodeResult::Succeeded;

@@ -5,6 +5,7 @@
 #include "PerceptiveAI_Shooter/AICharacterBase.h"
 #include "BehaviorTree/BehaviorTreeComponent.h"
 #include "AIController.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 UBTD_HasPatrolPath::UBTD_HasPatrolPath()
 {
@@ -17,11 +18,6 @@ bool UBTD_HasPatrolPath::CalculateRawConditionValue(UBehaviorTreeComponent& Owne
 	if (!bSuccess) return false;
 
 	AAICharacterBase* AIPawn = Cast<AAICharacterBase>(OwnerComp.GetAIOwner()->GetPawn());
-	if (AIPawn)
-	{
-		UE_LOG(LogTemp, Warning, L"ActorOwner Name : %s, Controller : %s ", *AIPawn->GetName(), *AIPawn->GetController()->GetName())
-		//return false;
-	}
-	
-	return true;
+	if (!AIPawn) return false;
+	return UKismetSystemLibrary::IsValid(IInterfaceAIHelper::Execute_GetPatrolRoute(AIPawn));
 }
