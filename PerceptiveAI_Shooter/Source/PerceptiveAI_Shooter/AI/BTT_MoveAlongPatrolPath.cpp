@@ -25,7 +25,6 @@ EBTNodeResult::Type UBTT_MoveAlongPatrolPath::ExecuteTask(UBehaviorTreeComponent
 	if (!AIGuard) return EBTNodeResult::Failed;
 
 	
-
 	//UE_LOG(LogTemp, Warning, L"Executing");
 
 	return EBTNodeResult::Succeeded;
