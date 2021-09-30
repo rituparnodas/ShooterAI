@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "PerceptiveAI_Shooter/AICharacterBase.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
+#include "BehaviorTree/BTFunctionLibrary.h"
 
 UBTT_UpdateMovementSpeed::UBTT_UpdateMovementSpeed()
 {
@@ -24,6 +25,8 @@ EBTNodeResult::Type UBTT_UpdateMovementSpeed::ExecuteTask(UBehaviorTreeComponent
 	AAICharacterBase* AIGuard = Cast<AAICharacterBase>(AIPawn);
 	if (!AIGuard) return EBTNodeResult::Failed;
 	
+	if(!OwnerComp.GetBlackboardComponent()) return EBTNodeResult::Failed;
+
 	IInterfaceAIHelper::Execute_ModifyMovementSpeed(AIGuard, (ENPCState)UBTFunctionLibrary::GetBlackboardValueAsEnum(this, StateKey));
 
 	//UE_LOG(LogTemp, Warning, L"Executing");

@@ -28,12 +28,31 @@ EBTNodeResult::Type UBTT_MoveAlongPatrolPath::ExecuteTask(UBehaviorTreeComponent
 	APatrolRoute* PatrolRoute = IInterfaceAIHelper::Execute_GetPatrolRoute(AIGuard);
 	if (PatrolRoute)
 	{
-		PatrolRoute->GetNextPointAsWorldPosition();
+		FVector NextPoint = PatrolRoute->GetNextPointAsWorldPosition();
 		AAICGuard* AIGuardController = Cast<AAICGuard>(AIGuard->GetController());
 		if (AIGuardController)
 		{
-			FAIMoveRequest Request;
-			FPathFollowingRequestResult AIMoveToResult = AIGuardController->MoveTo(Request,);
+			FAIMoveRequest MoveRequest;
+			//MoveRequest.SetGoalActor(PatrolRoute);
+			MoveRequest.SetGoalLocation(NextPoint);
+			MoveRequest.SetAcceptanceRadius(15.f);
+			MoveRequest.SetStopOnOverlap(false);
+			FPathFollowingRequestResult AIMoveToResult = AIGuardController->MoveTo(MoveRequest);
+			if (AIMoveToResult.Code == EPathFollowingRequestResult::RequestSuccessful)
+			{
+				PatrolRoute->IncrementPatrolPath(); // See 11.10 - 17:53
+				UE_LOG(LogTemp, Warning, L"Request Successful");
+			}
+			else if (AIMoveToResult.Code == EPathFollowingRequestResult::Failed)
+			{
+				PatrolRoute->IncrementPatrolPath(); // See 11.10 - 17:53
+				UE_LOG(LogTemp, Error, L"Request Failed");
+			}
+			else if (AIMoveToResult.Code == EPathFollowingRequestResult::AlreadyAtGoal)
+			{
+				PatrolRoute->IncrementPatrolPath(); // See 11.10 - 17:53
+				UE_LOG(LogTemp, Warning, L"Request AlreadyAtGoal");
+			}
 		}
 	}
 		

@@ -30,7 +30,7 @@ void APatrolRoute::Tick(float DeltaTime)
 void APatrolRoute::IncrementPatrolPath()
 {
 	++PatrolIndex;
-	PatrolIndex = PatrolIndex % PatrolPath->GetNumberOfSplinePoints();
+	PatrolIndex %= PatrolPath->GetNumberOfSplinePoints();
 }
 
 FVector APatrolRoute::GetNextPointAsWorldPosition()
