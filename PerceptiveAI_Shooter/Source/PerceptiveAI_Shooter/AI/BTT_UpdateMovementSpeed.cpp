@@ -7,6 +7,7 @@
 #include "PerceptiveAI_Shooter/AICharacterBase.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UBTT_UpdateMovementSpeed::UBTT_UpdateMovementSpeed()
 {
@@ -25,9 +26,12 @@ EBTNodeResult::Type UBTT_UpdateMovementSpeed::ExecuteTask(UBehaviorTreeComponent
 	AAICharacterBase* AIGuard = Cast<AAICharacterBase>(AIPawn);
 	if (!AIGuard) return EBTNodeResult::Failed;
 	
-	if(!OwnerComp.GetBlackboardComponent()) return EBTNodeResult::Failed;
+	UBlackboardComponent* BlackboardComp = OwnerComp.GetBlackboardComponent();
+	if(!BlackboardComp) return EBTNodeResult::Failed;
 
-	IInterfaceAIHelper::Execute_ModifyMovementSpeed(AIGuard, (ENPCState)UBTFunctionLibrary::GetBlackboardValueAsEnum(this, StateKey));
+	uint8 BB_Enum = BlackboardComp->GetValueAsEnum(StateKey.SelectedKeyName);
+
+	IInterfaceAIHelper::Execute_ModifyMovementSpeed(AIGuard, (ENPCState)BB_Enum);
 
 	//UE_LOG(LogTemp, Warning, L"Executing");
 
