@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "BehaviorTree/BTTaskNode.h"
+#include "Navigation\PathFollowingComponent.h"
+#include "AIModule\Classes\AITypes.h"
 #include "BTT_MoveAlongPatrolPath.generated.h"
 
 /**
@@ -20,6 +22,10 @@ public:
 
 	class AAIController* AIController = nullptr;
 	class APawn* AIPawn = nullptr;
+	class APatrolRoute* PatrolRoute = nullptr;
+
+	UFUNCTION()
+	void OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result);
 
 protected:
 

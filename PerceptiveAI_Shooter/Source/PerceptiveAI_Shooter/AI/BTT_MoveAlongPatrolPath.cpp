@@ -7,6 +7,7 @@
 #include "PerceptiveAI_Shooter/AICharacterBase.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
 #include "PerceptiveAI_Shooter/AICGuard.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
 
 UBTT_MoveAlongPatrolPath::UBTT_MoveAlongPatrolPath()
 {
@@ -25,38 +26,46 @@ EBTNodeResult::Type UBTT_MoveAlongPatrolPath::ExecuteTask(UBehaviorTreeComponent
 	AAICharacterBase* AIGuard = Cast<AAICharacterBase>(AIPawn);
 	if (!AIGuard) return EBTNodeResult::Failed;
 
-	APatrolRoute* PatrolRoute = IInterfaceAIHelper::Execute_GetPatrolRoute(AIGuard);
+	PatrolRoute = IInterfaceAIHelper::Execute_GetPatrolRoute(AIGuard);
 	if (PatrolRoute)
 	{
 		FVector NextPoint = PatrolRoute->GetNextPointAsWorldPosition();
 		AAICGuard* AIGuardController = Cast<AAICGuard>(AIGuard->GetController());
 		if (AIGuardController)
 		{
-			FAIMoveRequest MoveRequest;
-			//MoveRequest.SetGoalActor(PatrolRoute);
-			MoveRequest.SetGoalLocation(NextPoint);
-			MoveRequest.SetAcceptanceRadius(15.f);
-			MoveRequest.SetStopOnOverlap(false);
-			FPathFollowingRequestResult AIMoveToResult = AIGuardController->MoveTo(MoveRequest);
-			if (AIMoveToResult.Code == EPathFollowingRequestResult::RequestSuccessful)
-			{
-				PatrolRoute->IncrementPatrolPath(); // See 11.10 - 17:53
-				UE_LOG(LogTemp, Warning, L"Request Successful");
-			}
-			else if (AIMoveToResult.Code == EPathFollowingRequestResult::Failed)
-			{
-				PatrolRoute->IncrementPatrolPath(); // See 11.10 - 17:53
-				UE_LOG(LogTemp, Error, L"Request Failed");
-			}
-			else if (AIMoveToResult.Code == EPathFollowingRequestResult::AlreadyAtGoal)
-			{
-				PatrolRoute->IncrementPatrolPath(); // See 11.10 - 17:53
-				UE_LOG(LogTemp, Warning, L"Request AlreadyAtGoal");
-			}
+			AIGuardController->ReceiveMoveCompleted.RemoveDynamic(this, &UBTT_MoveAlongPatrolPath::OnMoveCompleted);
+			AIGuardController->ReceiveMoveCompleted.AddDynamic(this, &UBTT_MoveAlongPatrolPath::OnMoveCompleted);
+			UAIBlueprintHelperLibrary::CreateMoveToProxyObject(nullptr, AIGuard, NextPoint, nullptr, 15.f);			
 		}
 	}
 		
 	//UE_LOG(LogTemp, Warning, L"Executing");
 
 	return EBTNodeResult::Succeeded;
+}
+
+void UBTT_MoveAlongPatrolPath::OnMoveCompleted(FAIRequestID RequestID, EPathFollowingResult::Type Result)
+{
+	switch (Result)
+	{
+	case EPathFollowingResult::Success:
+		UE_LOG(LogTemp, Warning, L"Success!!!");
+		break;
+	case EPathFollowingResult::Blocked:
+		UE_LOG(LogTemp, Error, L"Blocked!!!");
+		break;
+	case EPathFollowingResult::OffPath:
+		UE_LOG(LogTemp, Error, L"OffPath!!!");
+		break;
+	case EPathFollowingResult::Aborted:
+		UE_LOG(LogTemp, Error, L"Aborted!!!");
+		break;
+	case EPathFollowingResult::Skipped_DEPRECATED:
+		break;
+	case EPathFollowingResult::Invalid:
+		UE_LOG(LogTemp, Error, L"Invalid!!!");
+		break;
+	}
+
+	PatrolRoute->IncrementPatrolPath();
 }

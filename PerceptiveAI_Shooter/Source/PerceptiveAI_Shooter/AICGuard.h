@@ -69,5 +69,4 @@ public:
 
 	UPROPERTY(BlueprintReadWrite, Category = "AI")
 		FAIStimulus ActorSensedStimulus;
-
 };
