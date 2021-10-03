@@ -52,7 +52,7 @@ public:
 	virtual bool GetTeamID_Implementation() override;
 	virtual void ModifyMovementSpeed_Implementation(ENPCState NPCState) override;
 	virtual class APatrolRoute* GetPatrolRoute_Implementation() override;
-	virtual void ModifyAimingStance_Implementation(bool IsAiming) override;
+	virtual void ModifyAimingStance_Implementation(bool bIsAimingParam) override;
 
 private:
 

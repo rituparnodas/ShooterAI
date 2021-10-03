@@ -39,7 +39,7 @@ public:
 		bool GetTeamID(); // True If Player
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-		void ModifyAimingStance(bool IsAiming);
+		void ModifyAimingStance(bool bIsAimingParam);
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		void ModifyMovementSpeed(ENPCState NPCState);

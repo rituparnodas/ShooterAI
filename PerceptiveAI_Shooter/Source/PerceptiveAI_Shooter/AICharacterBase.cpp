@@ -103,12 +103,12 @@ APatrolRoute* AAICharacterBase::GetPatrolRoute_Implementation()
 	return PatrolRoute;
 }
 
-void AAICharacterBase::ModifyAimingStance_Implementation(bool IsAiming)
+void AAICharacterBase::ModifyAimingStance_Implementation(bool bIsAimingParam)
 {
 	UAIAnimationInstance* ABP = Cast<UAIAnimationInstance>(GetMesh()->GetAnimInstance());
 	if (ABP)
 	{
-		Execute_ModifyAimingStance(ABP, IsAiming);
+		Execute_ModifyAimingStance(ABP, bIsAimingParam);
 	}
 }
 
