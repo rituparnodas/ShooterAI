@@ -38,8 +38,6 @@ EBTNodeResult::Type UBTT_MoveAlongPatrolPath::ExecuteTask(UBehaviorTreeComponent
 			UAIBlueprintHelperLibrary::CreateMoveToProxyObject(nullptr, AIGuard, NextPoint, nullptr, 15.f);			
 		}
 	}
-		
-	//UE_LOG(LogTemp, Warning, L"Executing");
 
 	return EBTNodeResult::Succeeded;
 }
@@ -50,9 +48,11 @@ void UBTT_MoveAlongPatrolPath::OnMoveCompleted(FAIRequestID RequestID, EPathFoll
 	{
 	case EPathFollowingResult::Success:
 		UE_LOG(LogTemp, Warning, L"Success!!!");
+		PatrolRoute->IncrementPatrolPath();
 		break;
 	case EPathFollowingResult::Blocked:
 		UE_LOG(LogTemp, Error, L"Blocked!!!");
+		PatrolRoute->IncrementPatrolPath();
 		break;
 	case EPathFollowingResult::OffPath:
 		UE_LOG(LogTemp, Error, L"OffPath!!!");
@@ -65,7 +65,5 @@ void UBTT_MoveAlongPatrolPath::OnMoveCompleted(FAIRequestID RequestID, EPathFoll
 	case EPathFollowingResult::Invalid:
 		UE_LOG(LogTemp, Error, L"Invalid!!!");
 		break;
-	}
-
-	PatrolRoute->IncrementPatrolPath();
+	}	
 }

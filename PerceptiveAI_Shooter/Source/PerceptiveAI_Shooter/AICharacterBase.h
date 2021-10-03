@@ -32,6 +32,8 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Weapons")
 	class APatrolRoute* PatrolRoute = nullptr;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Animations")
+		class UAnimMontage* AnimMontageAsset = nullptr;
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -42,11 +44,15 @@ public:
 	UFUNCTION()
 		void HandleDeath();
 
+	UFUNCTION()
+		void OnDamageTaken();
+
 	virtual bool GetIsDead_Implementation() override;
 	virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
 	virtual bool GetTeamID_Implementation() override;
 	virtual void ModifyMovementSpeed_Implementation(ENPCState NPCState) override;
 	virtual class APatrolRoute* GetPatrolRoute_Implementation() override;
+	virtual void ModifyAimingStance_Implementation(bool IsAiming) override;
 
 private:
 

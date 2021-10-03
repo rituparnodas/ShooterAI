@@ -21,6 +21,7 @@ void AAICharacterBase::BeginPlay()
 	Super::BeginPlay();
 
 	HealthComp->OnDeath.AddDynamic(this, &AAICharacterBase::HandleDeath);
+	HealthComp->OnDamageTaken.AddDynamic(this, &AAICharacterBase::OnDamageTaken);
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -100,4 +101,18 @@ void AAICharacterBase::ModifyMovementSpeed_Implementation(ENPCState NPCState)
 APatrolRoute* AAICharacterBase::GetPatrolRoute_Implementation()
 {
 	return PatrolRoute;
+}
+
+void AAICharacterBase::ModifyAimingStance_Implementation(bool IsAiming)
+{
+	UAIAnimationInstance* ABP = Cast<UAIAnimationInstance>(GetMesh()->GetAnimInstance());
+	if (ABP)
+	{
+		Execute_ModifyAimingStance(ABP, IsAiming);
+	}
+}
+
+void AAICharacterBase::OnDamageTaken()
+{
+	PlayAnimMontage(AnimMontageAsset);
 }
