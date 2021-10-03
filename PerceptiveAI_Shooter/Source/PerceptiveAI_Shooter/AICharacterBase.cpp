@@ -14,6 +14,9 @@ AAICharacterBase::AAICharacterBase()
 	PrimaryActorTick.bCanEverTick = true;
 
 	HealthComp = CreateDefaultSubobject<UHealthComponent>(FName("HealthComponent"));
+
+	bUseControllerRotationYaw = false;
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 void AAICharacterBase::BeginPlay()

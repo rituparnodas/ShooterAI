@@ -4,10 +4,11 @@
 #include "AIAnimationInstance.h"
 #include "AICharacterBase.h"
 #include "GameFramework/PawnMovementComponent.h"
+#include "Kismet/KismetMathLibrary.h"
 
 void UAIAnimationInstance::NativeUpdateAnimation(float DeltaSeconds)
 {
-	UE_LOG(LogTemp, Warning, L"Working")
+	//UE_LOG(LogTemp, Warning, L"Working")
 
 	AAICharacterBase* AIGuard = Cast<AAICharacterBase>(TryGetPawnOwner());
 	if (AIGuard && AIGuard->IsValidLowLevel())
@@ -17,6 +18,11 @@ void UAIAnimationInstance::NativeUpdateAnimation(float DeltaSeconds)
 		{
 			bIsInAir = MovementComp->IsFalling();
 			Speed = AIGuard->GetVelocity().Size();
+
+			FRotator DeltaRotator = UKismetMathLibrary::NormalizedDeltaRotator(AIGuard->GetControlRotation(), AIGuard->GetActorRotation());
+			FRotator RInterpValue = UKismetMathLibrary::RInterpTo(FRotator(AimPitch, AimYaw, 0.f), DeltaRotator, GetWorld()->DeltaTimeSeconds, 15.f);
+			AimPitch = FMath::Clamp(AimPitch, -90.f, 90.f);
+			AimYaw = FMath::Clamp(AimYaw, -90.f, 90.f);
 		}
 	}
 }
