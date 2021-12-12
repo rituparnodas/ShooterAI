@@ -56,6 +56,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "State")
 	void SetStateAsDead();
 
+	UFUNCTION(BlueprintCallable, Category = "State")		
+		void SetStateAs(TEnumAsByte<ENPCState> NPCState, FVector Seeking_Search = FVector::ZeroVector,
+			FVector Investigating_MoveToLocation = FVector::ZeroVector, FVector Investigating_PointOfLocation = FVector::ZeroVector, AActor* Attack_Target = nullptr);
+
 	//virtual void NotifyChangeState_Implementation(ENPCState NPCState) override;
 
 	UFUNCTION()

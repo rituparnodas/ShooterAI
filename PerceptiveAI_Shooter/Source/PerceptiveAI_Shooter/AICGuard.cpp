@@ -218,3 +218,20 @@ void AAICGuard::ProcessLastHearingStimuli()
 		}	
 	}
 }
+
+void AAICGuard::SetStateAs(TEnumAsByte<ENPCState> State, FVector Seeking_Search, FVector Investigating_MoveToLocation, FVector Investigating_PointOfLocation, AActor* Attack_Target)
+{
+	switch (State)
+	{
+	case Passive: SetStateAsPassive();
+		break;
+	case Investigating: SetStateAsInvestigating(Investigating_MoveToLocation, Investigating_PointOfLocation);
+		break;
+	case Seeking: SetStateAsSeeking(Seeking_Search);
+		break;
+	case Attack: SetStateAsAttack(Attack_Target);
+		break;
+	case Dead: SetStateAsDead();
+		break;
+	}
+}

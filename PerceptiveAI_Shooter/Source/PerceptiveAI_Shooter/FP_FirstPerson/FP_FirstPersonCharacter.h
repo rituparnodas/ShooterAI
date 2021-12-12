@@ -18,12 +18,14 @@ class AFP_FirstPersonCharacter : public ACharacter, public IInterfaceAIHelper
 {
 	GENERATED_BODY()
 
+public:
+
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
 	/** Gun mesh */
-	UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = Mesh)
 	USkeletalMeshComponent* FP_Gun;
 
 	/** First person camera */
@@ -34,11 +36,11 @@ public:
 	AFP_FirstPersonCharacter();
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Camera)
 	float BaseTurnRate;
 
 	/** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Camera)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category=Camera)
 	float BaseLookUpRate;
 
 	/** Gun muzzle's offset from the characters location */

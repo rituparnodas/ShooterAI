@@ -143,6 +143,7 @@ void AFP_FirstPersonCharacter::OnFire()
 	MakeNoise(1.f, this, GetActorLocation(), 0.f, FName("GunShot"));
 
 	UAISense_Damage::ReportDamageEvent(GetWorld(), Impact.GetActor(), this, 20.f, GetActorLocation(), Impact.Location); // For AISense_Damage
+	MakeNoise(1.f, this, Impact.Location, 0.f);
 
 	// If we hit an actor, with a component that is simulating physics, apply an impulse
 	if ((DamagedActor != nullptr) && (DamagedActor != this) && (DamagedComponent != nullptr) && DamagedComponent->IsSimulatingPhysics())
