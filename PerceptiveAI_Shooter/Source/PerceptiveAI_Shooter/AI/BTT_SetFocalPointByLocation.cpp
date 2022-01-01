@@ -4,6 +4,7 @@
 #include "PerceptiveAI_Shooter/AI/BTT_SetFocalPointByLocation.h"
 #include "PerceptiveAI_Shooter/AICGuard.h"
 #include "BehaviorTree/BTFunctionLibrary.h"
+#include "BehaviorTree/BlackboardComponent.h"
 
 UBTT_SetFocalPointByLocation::UBTT_SetFocalPointByLocation()
 {
@@ -21,7 +22,7 @@ EBTNodeResult::Type UBTT_SetFocalPointByLocation::ExecuteTask(UBehaviorTreeCompo
 	AAICGuard* AICGuard{ Cast<AAICGuard>(AIController) };
 	if (!AICGuard) return EBTNodeResult::Failed;
 
-	AICGuard->SetFocalPoint(UBTFunctionLibrary::GetBlackboardValueAsVector(this, PointOfInterest));
+	AICGuard->SetFocalPoint(OwnerComp.GetBlackboardComponent()->GetValueAsVector(PointOfInterest.SelectedKeyName));
 
 	return EBTNodeResult::Succeeded;
 }
