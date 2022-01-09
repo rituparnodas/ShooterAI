@@ -24,7 +24,7 @@ void AWeaponBase::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OnFireRequested.AddDynamic(this, &AWeaponBase::FireRound);
+	OnFireRequested.AddDynamic(this, &AWeaponBase::FireRequested);
 	
 }
 
@@ -33,6 +33,24 @@ void AWeaponBase::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
+
+void AWeaponBase::ResetDOOnce()
+{
+	DoOnce_COND = true;
+	OnWeaponFired.Broadcast();
+}
+
+void AWeaponBase::FireRequested()
+{
+	if (DoOnce_COND)
+	{
+		DoOnce_COND = false;
+		FireRound();
+		FTimerHandle Handle_FireCooldown;
+		GetWorld()->GetTimerManager().SetTimer(Handle_FireCooldown, this, &AWeaponBase::ResetDOOnce, CycleRate);
+	}
+}
+
 
 void AWeaponBase::FireRound()
 {

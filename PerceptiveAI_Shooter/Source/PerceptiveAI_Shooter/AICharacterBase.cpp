@@ -115,7 +115,34 @@ void AAICharacterBase::ModifyAimingStance_Implementation(bool bIsAimingParam)
 	}
 }
 
+float AAICharacterBase::GetWeaponRange_Implementation()
+{
+	if (Weapon)
+	{
+		return Weapon->GetWeaponRange();
+	}
+
+	return 0.f;
+}
+
 void AAICharacterBase::OnDamageTaken()
 {
 	PlayAnimMontage(AnimMontageAsset);
+}
+
+AWeaponBase* AAICharacterBase::GetWeapon_Implementation()
+{
+	if (Weapon)
+	{
+		return Weapon;
+	}
+	return nullptr;
+}
+
+void AAICharacterBase::TryShootEquipWeapon_Implementation()
+{
+	if (Weapon != nullptr)
+	{
+		Weapon->OnFireRequested.Broadcast();
+	}
 }

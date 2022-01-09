@@ -46,4 +46,13 @@ public:
 
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 		class APatrolRoute* GetPatrolRoute();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		float GetWeaponRange();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		class AWeaponBase* GetWeapon();
+
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+		void TryShootEquipWeapon();
 };

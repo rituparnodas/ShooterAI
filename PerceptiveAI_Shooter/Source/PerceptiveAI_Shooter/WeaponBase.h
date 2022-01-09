@@ -7,6 +7,7 @@
 #include "WeaponBase.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnFireRequested);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnWeaponFired);
 
 UCLASS()
 class PERCEPTIVEAI_SHOOTER_API AWeaponBase : public AActor
@@ -45,16 +46,28 @@ protected:
 	UPROPERTY(EditAnywhere)
 		TSubclassOf<UDamageType> DamageType;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		float CycleRate = 0.1f;
 
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void FireRequested();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnFireRequested OnFireRequested;
+
+	UPROPERTY(BlueprintAssignable)
+		FOnWeaponFired OnWeaponFired;
+
+	float GetWeaponRange() { return WeaponRange; }
+
+	void ResetDOOnce();
+
 
 private:
 
 	void FireRound();
-
+	bool DoOnce_COND = true;
 };

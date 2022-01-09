@@ -53,6 +53,9 @@ public:
 	virtual void ModifyMovementSpeed_Implementation(ENPCState NPCState) override;
 	virtual class APatrolRoute* GetPatrolRoute_Implementation() override;
 	virtual void ModifyAimingStance_Implementation(bool bIsAimingParam) override;
+	virtual float GetWeaponRange_Implementation() override;
+	class AWeaponBase* GetWeapon_Implementation() override;
+	virtual void TryShootEquipWeapon_Implementation() override;
 
 private:
 

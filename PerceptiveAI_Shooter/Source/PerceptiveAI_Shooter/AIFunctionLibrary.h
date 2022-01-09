@@ -28,5 +28,4 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	static FTransform GetIdentityTransform();
-	
 };
