@@ -29,5 +29,5 @@ bool UBTD_IsInWeaponRange::CalculateRawConditionValue(UBehaviorTreeComponent& Ow
 	AActor* TargetKeyActor = Cast<AActor>(TargetKeyObject);
 	if (!TargetKeyActor) return false;
 
-	return AIPawn->GetDistanceTo(TargetKeyActor) > WeaponRange;
+	return !(AIPawn->GetDistanceTo(TargetKeyActor) >= WeaponRange);
 }

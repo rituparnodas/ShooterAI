@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshcomponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Perception/AISense_Damage.h"
+#include "DrawDebugHelpers.h"
 
 AWeaponBase::AWeaponBase()
 {
@@ -77,4 +78,8 @@ void AWeaponBase::FireRound()
 			HitResult.Location, 
 			HitResult.Location);
 	}
+
+	DrawDebugLine(GetWorld(), MuzzlePoint.GetLocation(), HitResult.Location, FColor::Emerald, true, 4, 1, 10);
+
+	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
 }

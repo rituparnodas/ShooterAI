@@ -37,6 +37,7 @@ EBTNodeResult::Type UBTT_TryShoot::ExecuteTask(UBehaviorTreeComponent& OwnerComp
 	}
 	else
 	{
+		UE_LOG(LogTemp,Warning, TEXT("Try Shoot Failed Due To Null Weapon"))
 		return EBTNodeResult::Failed;
 	}
 
