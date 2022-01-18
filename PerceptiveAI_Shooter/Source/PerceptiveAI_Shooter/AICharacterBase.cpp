@@ -28,7 +28,7 @@ void AAICharacterBase::BeginPlay()
 
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	Weapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, UAIFunctionLibrary::GetIdentityTransform(), SpawnParams);
+	Weapon = GetWorld()->SpawnActor<AWeaponBase>(WeaponClass, GetMesh()->GetSocketTransform(FName("WeaponSocket")), SpawnParams);
 	if (Weapon)
 	{
 		Weapon->SetOwner(this);

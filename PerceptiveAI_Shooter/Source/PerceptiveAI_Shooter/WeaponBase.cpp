@@ -33,6 +33,7 @@ void AWeaponBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	
 }
 
 void AWeaponBase::ResetDOOnce()
@@ -56,10 +57,27 @@ void AWeaponBase::FireRequested()
 void AWeaponBase::FireRound()
 {
 	FTransform MuzzlePoint{ MuzzleLocation->GetComponentTransform() };
-	AActor* Bullet{ GetWorld()->SpawnActor<AActor>(BulletClass, MuzzlePoint) };
-	UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSoundClass, MuzzlePoint.GetLocation());
+	if (BulletClass != nullptr)
+	{
+		AActor* Bullet{ GetWorld()->SpawnActor<AActor>(BulletClass, MuzzlePoint) };
+	}
+	
+	if (FireSoundClass != nullptr)
+	{
+		UGameplayStatics::PlaySoundAtLocation(GetWorld(), FireSoundClass, MuzzlePoint.GetLocation());
+	}
+	
 	FHitResult HitResult;
-	if (GetWorld()->LineTraceSingleByChannel(HitResult, MuzzlePoint.GetLocation(), (MuzzlePoint.GetLocation() + MuzzlePoint.GetLocation().ForwardVector * WeaponRange), ECC_Visibility))
+	FVector TraceStart = MuzzlePoint.GetLocation();
+	FVector TraceEnd = TraceStart + MuzzlePoint.GetRotation().Vector() * WeaponRange;
+	bool bHit = GetWorld()->LineTraceSingleByChannel(
+		HitResult, 
+		TraceStart,
+		TraceEnd,
+		ECC_Visibility
+	);
+
+	if (bHit)
 	{
 		UGameplayStatics::ApplyPointDamage(
 			HitResult.GetActor(),
@@ -79,7 +97,7 @@ void AWeaponBase::FireRound()
 			HitResult.Location);
 	}
 
-	DrawDebugLine(GetWorld(), MuzzlePoint.GetLocation(), HitResult.Location, FColor::Emerald, true, 4, 1, 10);
+	DrawDebugLine(GetWorld(), TraceStart, HitResult.Location, FColor::Red, true, 1, 5, 5);
 
 	UE_LOG(LogTemp, Warning, TEXT("Shooting"));
 }
