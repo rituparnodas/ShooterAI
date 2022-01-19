@@ -8,6 +8,9 @@
 #include "AIAnimationInstance.h"
 #include "PatrolRoute.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "AICGuard.h"
+#include "BrainComponent.h"
 
 AAICharacterBase::AAICharacterBase()
 {
@@ -58,6 +61,15 @@ void AAICharacterBase::HandleDeath()
 		GetMesh()->SetAllBodiesSimulatePhysics(true);
 		GetMesh()->WakeAllRigidBodies();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		AAICGuard* AIGuardController = Cast<AAICGuard>(UAIBlueprintHelperLibrary::GetAIController(this));
+		if (AIGuardController)
+		{
+			UBrainComponent* BrainComp = AIGuardController->GetBrainComponent();
+			if (BrainComp)
+			{
+				BrainComp->StopLogic("Dead");
+			}
+		}
 	}
 }
 

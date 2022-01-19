@@ -27,3 +27,10 @@ EBTNodeResult::Type UBTT_SetAimingMode::ExecuteTask(UBehaviorTreeComponent& Owne
 
 	return EBTNodeResult::Succeeded;
 }
+
+EBTNodeResult::Type UBTT_SetAimingMode::AbortTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
+{
+	Super::AbortTask(OwnerComp, NodeMemory);
+
+	return EBTNodeResult::Aborted;
+}
