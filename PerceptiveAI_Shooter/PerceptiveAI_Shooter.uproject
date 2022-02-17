@@ -13,11 +13,5 @@
 				"Engine"
 			]
 		}
-	],
-	"Plugins": [
-		{
-			"Name": "AtomsUnreal",
-			"Enabled": true
-		}
 	]
 }
